@@ -15,5 +15,5 @@
 * Заходим в Pull requests и создаем новый пул реквест
 * Объединяем свой репозиторий
 ## Интерфейс
-### Macos
+### macOS
 <img width="1680" alt="Снимок экрана 2023-12-11 в 01 09 11" src="https://github.com/Termtre/GFTS2/assets/95123992/0715d60b-41f5-4fa6-b1f6-097cdba2ed79">
