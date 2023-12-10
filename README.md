@@ -16,4 +16,4 @@
 * Объединяем свой репозиторий
 ## Интерфейс
 ### macOS
-<img width="1112" alt="Снимок экрана 2023-12-11 в 01 15 11" src="https://github.com/Termtre/GFTS2/assets/95123992/e61e427a-29e3-47e4-a8a7-48c38e4b240f">
+<img width="1687" alt="Снимок экрана 2023-12-11 в 01 16 11" src="https://github.com/Termtre/GFTS2/assets/95123992/ebe8abb4-8b6e-48a9-b92c-44c82e32843d">
