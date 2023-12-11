@@ -16,6 +16,8 @@
 # Mono auto generated files
 mono_crash.*
 
+*.DS_Store
+
 # Build results
 build/
 [Dd]ebug/

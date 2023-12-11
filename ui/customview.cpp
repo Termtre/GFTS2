@@ -45,9 +45,6 @@ void CustomView::wheelEvent(QWheelEvent *event)
             ZoomMaxY = cur.y() - (cur.y() - MaxY) * koef;
         }
 
-        //if (ZoomMinX < -1.) ZoomMinX = -1.;
-        //if (ZoomMaxX > 2.) ZoomMaxX = 2.;
-
         axisX->setRange(ZoomMinX, ZoomMaxX);
         axisY->setRange(ZoomMinY, ZoomMaxY);
     }

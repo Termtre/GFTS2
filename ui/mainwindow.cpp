@@ -72,11 +72,11 @@ void MainWindow::on_firstStart_clicked()
     testAnSeries = new QLineSeries();
     testAnSeries->setName("Аналитическая траектория");
     testSeries = new QLineSeries();
-    testSeries->setName("Траектория методом баланса");
+    testSeries->setName("Численная траектория");
 
     for (int i = 0; i < 10; i++)
     {
-        *testSeries << QPointF(i / 10, i * i / 100);
+        *testSeries << QPointF((float)i / 10.f, (float)(i * i) / 100.f);
     }
 
     if (ui->firstShowDot->isChecked())
@@ -108,6 +108,11 @@ void MainWindow::on_secondStart_clicked()
     ui->graphicsView_2->zoomIt(true);
 
     mainSeries = new QLineSeries();
+
+    for (int i = 0; i < 10; i++)
+    {
+        *mainSeries << QPointF((float)i / 10.f, (float)(i * i) / 100.f);
+    }
 
     if (ui->secondShowDot->isChecked())
     {
