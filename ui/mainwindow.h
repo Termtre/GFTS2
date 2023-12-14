@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QtCharts/QtCharts>
+#include "../task/testTask.h"
+#include "../task/mainTask.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

@@ -1,103 +1,120 @@
 ﻿#include "testTask.h"
 #define _USE_MATH_DEFINES
-#include <math.h>
 
-TestTask::TestTask(int nodes) : Task(nodes)
+double TestTask::a(double x, double h)
 {
-private:
-	matrix = std::vector<std::vector<double>> pole(nodes, std::vector<double>(nodes));
-	double h = 1/nodes;
-	double x* = new double[nodes + 1];
-	double A* = new double[nodes + 1];
-	double B* = new double[nodes + 1];
-	double C* = new double[nodes + 1];
-	double* U = new double[nodes + 1];
-	double* V = new double[nodes + 1];
-	V[0] = 0; V[nodes] = 1;
-	double Alph = new double[nodes + 1];
-	double Bet = new double[nodes + 1];
-	Alph[0] = 0; Bet[0] = nu1;
+    if (xi >= x)
+    {
+        return k1;
+    }
+    else if (xi <= (x - h))
+    {
+        return k2;
+    }
+    else
+    {
+        return h * 1. / (((xi - x + h) / k1) + ((x - xi) / k2));
+    }
+}
 
+double TestTask::d(double x, double h)
+{
+    if (xi >= (x + h / 2))
+    {
+        return q1;
+    }
+    else if (x <= (x - h / 2))
+    {
+        return q2;
+    }
+    else
+    {
+        return (1. / h) * ((q1 * (xi - x + h / 2.)) + (q2 * (x + h / 2. - xi)));
+    }
+}
 
+double TestTask::phi(double x, double h)
+{
+    if (xi >= (x + h / 2.))
+    {
+        return f1;
+    }
+    else if (xi < (x - h / 2.))
+    {
+        return f2;
+    }
+    else
+    {
+        return (1. / h) * (f1 * (xi - x + h / 2.) + f2 * (x + h / 2. - xi));
+    }
+}
 
-	double a(double h, double* x, int i)
-	{
+TestTask::TestTask(int N) : Task(N)
+{}
 
-		if (x[i] <= xi) return k1;
-		else if (x[i - 1] >= xi) return k2;
-		else
-		{
-			return  h * 1. / (((xi - x[i] + h) / k1) + ((x[i] - xi) / k2));
-		}
-	}
+void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
+{
+    double x = 0.;
+    double h = 1. / (nodes - 1);
 
-	double d(double h, double* x, int i)
-	{
-		if (x[i] + h / 2 <= xi) return q1;
-		else if (x[i] - h / 2 >= xi) return q2;
-		else return (1 / h) * ((q1 * (xi - x[i] + h / 2)) + (q2 * (x[i] + h / 2 - xi)));
-	}
+    C[0] = 1.;
+    B[0] = 0.;
+    Phi[0] = mu1;
+    Phi[nodes - 1] = mu2;
+    C[nodes - 1] = 1.;
 
-	double fi(double h, double* x, int i)
-	{
-		if (x[i] + h / 2 <= xi) return f1;
-		else if (x[i] - h / 2 >= xi) return f2;
-		else
-		{
-			return (1 / h) * (f1 * (xi - x[i] + h / 2) + f2 * (x[i] + h / 2 - xi));
-		}
-	}
+    table->setRowCount(nodes);
 
+    for (int i = 1; i < nodes; i++)
+    {
+        x = i * h;
+        A[i] = a(x, h) / (h * h);
+        C[i] = (a(x, h) + a(x + h, h)) / (h * h) + d(x, h);
+        B[i] = a(x, h) / (h * h);
+        Phi[i] = phi(x, h);
+    }
 
-public:
-	void find_ABC()
-	{
-		for (int i = 1; i < nodes; i++)
-		{
-			A[i] = a(h, x, i) / (h * h);
-			B[i] = (a(h, x, i) + a(h, x, i + 1)) / (h * h) + d(h, x, i);
-			C[i] = a(h, x, i+1) / (h * h);
-		}
-	}
-	void print_ABC()
-	{
-		std::cout << "A" << "\t" << "B" << "\t" << "C" << endl;
-		for (int i = 0; i < N + 1; i++)
-		{
-			std::cout << A[i] << "\t" << B[i] << "\t" << C[i] << endl;
-		}
-	}
-	void find_Alph_Bet()
-	{
-		for (int i = 1; i < nodes; i++)
-		{
-			al[i] = (B[i]) / (C[i] - A[i] * al[i-1]);
-			be[i] = (fi(h, x, i-1) + A[i] * be[i-1]) / (C[i] - al[i-1] * A[i]);
+    progonka();
 
-		}
-	}
-	void find_Vi()
-	{
-		for (int i = N - 1; i > 0; i--)
-		{
-			V[i] = al[i] * V[i + 1] + be[i];
-		}
-	}
-	void print_V_vec()
-	{
-		std::cout << "x" << "\t" << "V" << endl;
-		for (int i = 0; i < N + 1; i++)
-		{
-			std::cout << i * 0.1 << "\t" << V[i] << std::endl;
-			//std::cout << "V[" << i << "]= " << V[i] << std::endl;
-		}
-	}
-	void main_func()
-	{
-		find_ABC();
-		find_Alph_Bet();
-		find_Vi();
-		print_V_vec();
-	}
+    *series << QPointF(0., 1.); // ????
+    table->setItem(0, 0, new QTableWidgetItem(QString::number(0)));
+    table->setItem(0, 1, new QTableWidgetItem(QString::number(0)));
+    table->setItem(0, 2, new QTableWidgetItem(QString::number(1)));
 
+    for (int i = 1; i < nodes; i++)
+    {
+        x = static_cast<double>(i) * h;
+        *series << QPointF(x, V[i]);
+        table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
+        table->setItem(i, 1, new QTableWidgetItem(QString::number(x)));
+        table->setItem(i, 3, new QTableWidgetItem(QString::number(V[i])));
+    }
+}
+
+void TestTask::calculateTrue(QLineSeries*& series, QTableWidget*& table)
+{
+    double x = 0., u = 1.;
+    double h = 1. / (nodes - 1.);
+
+    table->setRowCount(nodes);
+
+    *series << QPointF(0., 1.);
+
+    table->setItem(0, 0, new QTableWidgetItem(QString::number(0)));
+    table->setItem(0, 1, new QTableWidgetItem(QString::number(x)));
+    table->setItem(0, 2, new QTableWidgetItem(QString::number(u)));
+
+    for (int i = 1; i < nodes; i++)
+    {
+        x += h;
+        if (x < xi)
+            u = -0.960308 * exp((sqrt(30.) * x) / (sqrt(209.))) + -1.37303 / (exp((sqrt(30.) * x) / (sqrt(209.)))) + 10. / 3.;
+        else
+            u =  (-2.45985) * exp(x) + (-6.2589) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
+
+        *series << QPointF(x, u);
+        table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
+        table->setItem(i, 1, new QTableWidgetItem(QString::number(x)));
+        table->setItem(i, 2, new QTableWidgetItem(QString::number(u)));
+    }
 }

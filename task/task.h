@@ -1,11 +1,19 @@
 ﻿#pragma once
 
 #include <vector>
+#include <QLineSeries>
+#include <QTableWidget>
 
 class Task
 {
 protected:
-	std::vector<std::vector<double>> matrix;               // Трехдиагональная матрица
+    double xi = 0.3;                                       // Кси
+    int mu1 = 1;                                           // Левая граница
+    int mu2 = 0;                                           // Правая граница
+
+    std::vector<double> A;                                 // Левый элемент от диагонали
+    std::vector<double> C;                                 // Диагональ
+    std::vector<double> B;                                 // Правый элемент от диагонали
 	std::vector<double> V;                                 // Вектор приближенных решений краевой задачи
 	std::vector<double> Phi;                               // Правая часть СЛАУ
 	std::vector<double> alpha;                             // Вектор альф для метода прогонки
@@ -16,20 +24,15 @@ public:
 	Task(int);                         // Конструктор, принимающий количество узлов сетки, включая нулевой
 	~Task() {}
 
-#ifdef testMode
-
-	// для тестирования метода прогонки. принимает трехдиагональную матрицу, правую часть СЛАУ 
-	void test(const std::vector<std::vector<double>>&, 
-		      const std::vector<double>&);
-
-#endif
+private:
+    void normalization();              // Нормировка матрицы
+    void progonkaDirect();             // Прямой ход прогонки
+    void progonkaReverse();            // Обратный ход прогонки
+    void progonkaDirectParallel();     // Прямой ход встречной прогонки (Если есть желание - можете реализовать)
+    void progonkaReverseParallel();    // Обратный ход встречной прогонки (Если есть желание - можете реализовать)
 
 protected:
 	void progonka();                   // Метод прогонки
-	void normalization();              // Нормировка матрицы
-	void progonkaDirect();             // Прямой ход прогонки
-	void progonkaReverse();            // Обратный ход прогонки   
-	void progonkaDirectParallel();     // Прямой ход встречной прогонки (Если есть желание - можете реализовать)
-	void progonkaReverseParallel();    // Обратный ход встречной прогонки (Если есть желание - можете реализовать)
+    void resize(int n);                // Изменение полей
 
 };

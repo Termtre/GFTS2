@@ -74,10 +74,12 @@ void MainWindow::on_firstStart_clicked()
     testSeries = new QLineSeries();
     testSeries->setName("Численная траектория");
 
-    for (int i = 0; i < 10; i++)
-    {
-        *testSeries << QPointF((float)i / 10.f, (float)(i * i) / 100.f);
-    }
+    int n = ui->lineEdit->text().toInt();
+
+    TestTask task(n + 1);
+
+    task.calculateTrue(testAnSeries, ui->tableWidget);
+    task.calculate(testSeries, ui->tableWidget);
 
     if (ui->firstShowDot->isChecked())
     {
@@ -109,10 +111,10 @@ void MainWindow::on_secondStart_clicked()
 
     mainSeries = new QLineSeries();
 
-    for (int i = 0; i < 10; i++)
-    {
-        *mainSeries << QPointF((float)i / 10.f, (float)(i * i) / 100.f);
-    }
+    int n = ui->lineEdit_2->text().toInt();
+
+    MainTask task(n + 1);
+    task.calculate(mainSeries, ui->tableWidget_2);
 
     if (ui->secondShowDot->isChecked())
     {
