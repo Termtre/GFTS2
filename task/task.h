@@ -7,9 +7,9 @@
 class Task
 {
 protected:
-    double xi = 0.3;                                       // Кси
-    int mu1 = 1;                                           // Левая граница
-    int mu2 = 0;                                           // Правая граница
+    double xi = (1. / 3.);                                     // Кси
+    double mu1 = 1.;                                           // Левая граница
+    double mu2 = 2.;                                           // Правая граница
 
     std::vector<double> A;                                 // Левый элемент от диагонали
     std::vector<double> C;                                 // Диагональ

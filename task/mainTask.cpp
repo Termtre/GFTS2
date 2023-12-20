@@ -2,22 +2,22 @@
 
 double MainTask::k1(double x)
 {
-    return x * x + 2.;
+    return x;
 }
 
 double MainTask::k2(double x)
 {
-    return x * x;
+    return 1.;
 }
 
 double MainTask::q1(double x)
 {
-    return x;
+    return x * x;
 }
 
 double MainTask::q2(double x)
 {
-    return x * x;
+    return x;
 }
 
 double MainTask::f1(double x)
@@ -27,7 +27,7 @@ double MainTask::f1(double x)
 
 double MainTask::f2(double x)
 {
-    return sin(M_PI * x);
+    return x * x - 1.;
 }
 
 double MainTask::a(double x, double h)

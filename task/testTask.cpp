@@ -58,7 +58,7 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
     double h = 1. / (nodes - 1);
 
     C[0] = 1.;
-    B[0] = 0.;
+    B[0] = mu2;
     Phi[0] = mu1;
     Phi[nodes - 1] = mu2;
     C[nodes - 1] = 1.;
@@ -67,7 +67,7 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
 
     for (int i = 1; i < nodes; i++)
     {
-        x = i * h;
+        x = static_cast<double>(i) * h;
         A[i] = a(x, h) / (h * h);
         C[i] = (a(x, h) + a(x + h, h)) / (h * h) + d(x, h);
         B[i] = a(x, h) / (h * h);
