@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     chart1->setTitle("Тестовая задача");
 
     chart2 = new QChart();
-    chart2->legend()->setVisible(false);
+    chart2->legend()->setVisible(true);
     chart2->setTitle("Основная задача");
 
     axisX1 = new QValueAxis();
@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     axisY2 = new QValueAxis();
     axisY2->setLabelFormat("%f");
     axisY2->setTickCount(10);
-    axisY2->setTitleText("v");
+    axisY2->setTitleText("v, v2");
     chart2->addAxis(axisY2, Qt::AlignLeft);
 
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
@@ -154,12 +154,16 @@ void MainWindow::on_secondStart_clicked()
     ui->graphicsView_2->zoomIt(true);
 
     mainSeries = new QLineSeries();
+    mainSeries->setName("Численная траектория");
     main2Series = new QLineSeries();
+    main2Series->setName("Численная траектория с удвоенным числом разбиений");
 
     int n = ui->lineEdit_2->text().toInt();
 
     MainTask task(n + 1);
     task.calculate(mainSeries, ui->tableWidget_2);
+    MainTask task2(2 * n + 1);
+    task2.calculate2(main2Series, ui->tableWidget_2);
 
     if (ui->checkBox_3->isChecked()) main2Series->setVisible(true);
     else main2Series->setVisible(false);

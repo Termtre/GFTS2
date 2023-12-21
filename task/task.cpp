@@ -14,9 +14,21 @@ Task::Task(int n) : nodes(n)
 
 void Task::progonka()
 {
-    normalization();
+    //normalization();
     progonkaDirect();
     progonkaReverse();
+}
+
+void Task::resize(int n)
+{
+    nodes = n;
+    V.resize(nodes);
+    Phi.resize(nodes);
+    A.resize(nodes);
+    B.resize(nodes);
+    C.resize(nodes);
+    alpha.resize(nodes, 0.);
+    beta.resize(nodes, 0);
 }
 
 void Task::normalization()

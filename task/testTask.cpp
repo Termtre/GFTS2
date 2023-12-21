@@ -13,23 +13,23 @@ double TestTask::a(double x, double h)
     }
     else
     {
-        return h * 1. / (((xi - x + h) / k1) + ((x - xi) / k2));
+        return 1. / (1. / h * ((xi - x + h) / k1 + (x - xi) / k2));
     }
 }
 
 double TestTask::d(double x, double h)
 {
-    if (xi >= (x + h / 2))
+    if (xi >= (x + h / 2.))
     {
         return q1;
     }
-    else if (xi <= (x - h / 2))
+    else if (xi <= (x - h / 2.))
     {
         return q2;
     }
     else
     {
-        return (1. / h) * ((q1 * (xi - x + h / 2.)) + (q2 * (x + h / 2. - xi)));
+        return 1. / h * (q1 * (xi - (x - h / 2.)) + q2 * (x + h / 2 - xi));
     }
 }
 
@@ -45,7 +45,7 @@ double TestTask::phi(double x, double h)
     }
     else
     {
-        return (1. / h) * (f1 * (xi - x + h / 2.) + f2 * (x + h / 2. - xi));
+        return 1. / h * (f1 * (xi - (x - h / 2.)) + f2 * (x + h / 2 - xi));
     }
 }
 
@@ -58,7 +58,7 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
     double h = 1. / (nodes - 1);
 
     C[0] = 1.;
-    B[0] = 0;
+    B[0] = 0.;
     Phi[0] = mu1;
     Phi[nodes - 1] = mu2;
     C[nodes - 1] = 1.;
@@ -69,10 +69,14 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
     for (int i = 1; i < (nodes - 1); i++)
     {
         x += h;
+        /*A[i] = a(x, h) / (h * h);
+        C[i] = -((2. * a(x, h)) / (h * h) + d(x, h));
+        B[i] = a(x, h) / (h * h);
+        Phi[i] = -phi(x, h);*/
         A[i] = a(x, h) / (h * h);
-        C[i] = (a(x, h) + a(x + h, h)) / (h * h) + d(x, h);
+        C[i] = -((a(x, h) + a(x + h, h)) / (h * h) + d(x, h));
         B[i] = a(x + h, h) / (h * h);
-        Phi[i] = phi(x, h);
+        Phi[i] = -phi(x, h);
     }
 
     progonka();
