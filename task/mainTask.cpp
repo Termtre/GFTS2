@@ -120,6 +120,7 @@ void MainTask::calculate(QLineSeries*& series, QTableWidget*& table)
     table->setItem(0, 0, new QTableWidgetItem(QString::number(0)));
     table->setItem(0, 1, new QTableWidgetItem(QString::number(0)));
     table->setItem(0, 2, new QTableWidgetItem(QString::number(1)));
+    table->setItem(0, 3, new QTableWidgetItem(QString::number(1)));
 
     for (int i = 1; i < nodes; i++)
     {
@@ -128,6 +129,7 @@ void MainTask::calculate(QLineSeries*& series, QTableWidget*& table)
         table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
         table->setItem(i, 1, new QTableWidgetItem(QString::number(x)));
         table->setItem(i, 2, new QTableWidgetItem(QString::number(V[i])));
+        table->setItem(i, 3, new QTableWidgetItem(QString::number(V[i])));
     }
 }
 

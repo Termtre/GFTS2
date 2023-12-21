@@ -34,6 +34,14 @@ private slots:
 
     void on_secondShowDot_clicked(bool checked);
 
+    void on_checkBox_2_clicked(bool checked);
+
+    void on_checkBox_clicked(bool checked);
+
+    void on_checkBox_4_clicked(bool checked);
+
+    void on_checkBox_3_clicked(bool checked);
+
 private:
     QChart* chart1;
     QChart* chart2;
@@ -41,6 +49,7 @@ private:
     QLineSeries* testAnSeries = nullptr;
     QLineSeries* testSeries = nullptr;
     QLineSeries* mainSeries = nullptr;
+    QLineSeries* main2Series = nullptr;
 
     QValueAxis* axisX1;
     QValueAxis* axisY1;

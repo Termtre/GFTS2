@@ -23,7 +23,7 @@ double TestTask::d(double x, double h)
     {
         return q1;
     }
-    else if (x <= (x - h / 2))
+    else if (xi <= (x - h / 2))
     {
         return q2;
     }
@@ -39,7 +39,7 @@ double TestTask::phi(double x, double h)
     {
         return f1;
     }
-    else if (xi < (x - h / 2.))
+    else if (xi <= (x - h / 2.))
     {
         return f2;
     }
@@ -58,32 +58,35 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
     double h = 1. / (nodes - 1);
 
     C[0] = 1.;
-    B[0] = mu2;
+    B[0] = 0;
     Phi[0] = mu1;
     Phi[nodes - 1] = mu2;
     C[nodes - 1] = 1.;
+    A[nodes - 1] = 0.;
 
     table->setRowCount(nodes);
 
-    for (int i = 1; i < nodes; i++)
+    for (int i = 1; i < (nodes - 1); i++)
     {
-        x = static_cast<double>(i) * h;
+        x += h;
         A[i] = a(x, h) / (h * h);
         C[i] = (a(x, h) + a(x + h, h)) / (h * h) + d(x, h);
-        B[i] = a(x, h) / (h * h);
+        B[i] = a(x + h, h) / (h * h);
         Phi[i] = phi(x, h);
     }
 
     progonka();
 
-    *series << QPointF(0., 1.); // ????
-    table->setItem(0, 0, new QTableWidgetItem(QString::number(0)));
-    table->setItem(0, 1, new QTableWidgetItem(QString::number(0)));
-    table->setItem(0, 2, new QTableWidgetItem(QString::number(1)));
+    *series << QPointF(0., 1.);
+    table->setItem(0, 0, new QTableWidgetItem(QString::number(0.)));
+    table->setItem(0, 1, new QTableWidgetItem(QString::number(0.)));
+    table->setItem(0, 3, new QTableWidgetItem(QString::number(1.)));
+
+    x = 0.0;
 
     for (int i = 1; i < nodes; i++)
     {
-        x = static_cast<double>(i) * h;
+        x += h;
         *series << QPointF(x, V[i]);
         table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
         table->setItem(i, 1, new QTableWidgetItem(QString::number(x)));
@@ -95,6 +98,12 @@ void TestTask::calculateTrue(QLineSeries*& series, QTableWidget*& table)
 {
     double x = 0., u = 1.;
     double h = 1. / (nodes - 1.);
+    double C1 = -3.542581951274;
+    double C2 = -1.20924861794;
+    double C3 = -0.28609673798342;
+    double C4 = 1.61718565178286;
+    double a = 0.378867615211;
+    double p = 0.182762209622;
 
     table->setRowCount(nodes);
 
@@ -108,9 +117,12 @@ void TestTask::calculateTrue(QLineSeries*& series, QTableWidget*& table)
     {
         x += h;
         if (x < xi)
+            //u = C1 * exp(a * x) + C2 * exp(-a * x) + 10. / 3.;
             u = -0.960308 * exp((sqrt(30.) * x) / (sqrt(209.))) + -1.37303 / (exp((sqrt(30.) * x) / (sqrt(209.)))) + 10. / 3.;
         else
-            u =  (-2.45985) * exp(x) + (-6.2589) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
+            //u =  C3 * exp(x) + C4 * exp(-x) + p;
+            //u = (-6.2589) * exp(x) + (-2.45985) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
+            u = (-2.45985) * exp(x) + (-6.2589) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
 
         *series << QPointF(x, u);
         table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
