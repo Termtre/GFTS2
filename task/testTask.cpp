@@ -113,12 +113,16 @@ void TestTask::calculateTrue(QLineSeries*& series, QTableWidget*& table)
 {
     double x = 0., u = 1.;
     double h = 1. / (nodes - 1.);
-    double C1 = -3.542581951274;
-    double C2 = -1.20924861794;
-    double C3 = -0.28609673798342;
-    double C4 = 1.61718565178286;
-    double a = 0.378867615211;
-    double p = 0.182762209622;
+    //double C1 = -3.542581951274;
+    //double C2 = -1.20924861794;
+    //double C3 = -0.28609673798342;
+    //double C4 = 1.61718565178286;
+    double C1 = -0.9603081830452399;
+    double C2 = -1.373025150288093;
+    double C3 = -2.459846401499204;
+    double C4 = -6.258903552613842;
+    //double a = 0.378867615211;
+    //double p = 0.182762209622;
 
     table->setRowCount(nodes);
 
@@ -134,11 +138,13 @@ void TestTask::calculateTrue(QLineSeries*& series, QTableWidget*& table)
         if (x < xi)
             //u = C1 * exp(a * x) + C2 * exp(-a * x) + 10. / 3.;
             //u = -0.960308 * exp((sqrt(30.) * x) / (sqrt(209.))) + -1.37303 / (exp((sqrt(30.) * x) / (sqrt(209.)))) + 10. / 3.;
-            u = -0.960308 * exp(sqrt(30. / 209.) * x) + -1.37303 * exp(-sqrt(30. / 209.) * x) + 10. / 3.;
+            //u = -0.960308 * exp(sqrt(30. / 209.) * x) + -1.37303 * exp(-sqrt(30. / 209.) * x) + 10. / 3.;
+            u = C1 * exp(sqrt(30. / 209.) * x) + C2 * exp(-sqrt(30. / 209.) * x) + 10. / 3.;
         else
             //u =  C3 * exp(x) + C4 * exp(-x) + p;
             //u = (-6.2589) * exp(x) + (-2.45985) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
-            u = (-2.45985) * exp(x) + (-6.2589) * (exp(-x)) + sin(0.3 * M_PI) / 0.09;
+            //u = (-2.45985) * exp(x) + (-6.2589) * (exp(-x)) + sin(0.3 * M_PI) / 0.09;
+            u = C3 * exp(x) + C4 * (exp(-x)) + sin(0.3 * M_PI) / 0.09;
 
         *series << QPointF(x, u);
         table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
