@@ -22,13 +22,27 @@ void Task::progonka()
 void Task::resize(int n)
 {
     nodes = n;
-    V.resize(nodes);
-    Phi.resize(nodes);
-    A.resize(nodes);
-    B.resize(nodes);
-    C.resize(nodes);
+    V.resize(nodes, 0.);
+    Phi.resize(nodes, 0.);
+    A.resize(nodes, 0.);
+    B.resize(nodes, 0.);
+    C.resize(nodes, 0.);
     alpha.resize(nodes, 0.);
     beta.resize(nodes, 0);
+}
+
+void Task::setProgonka(const std::vector<double> &_A, const std::vector<double> &_B,
+                       const std::vector<double> &_C, const std::vector<double> &_Phi)
+{
+    A = _A;
+    B = _B;
+    C = _C;
+    Phi = _Phi;
+}
+
+std::vector<double> Task::getV()
+{
+    return V;
 }
 
 void Task::normalization()

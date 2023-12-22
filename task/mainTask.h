@@ -1,10 +1,19 @@
 ﻿#pragma once
 
 #include "task.h"
+#include <QLineSeries>
+#include <QTableWidget>
+#include <cmath>
+#include <vector>
 
-class MainTask : public Task
+class MainTask
 {
 private:
+    double xi = 0.3;                                       // Кси
+    double mu1 = 1.;                                       // Левая граница
+    double mu2 = 0.;                                       // Правая граница
+    int nodes;                                             // Число узлов
+
     double k1(double x);                                   // k1, x <= 0.3
     double k2(double x);                                   // k2, x >= 0.3
     double q1(double x);                                   // q1, x >= 0.3
@@ -20,6 +29,7 @@ public:
 	MainTask(int);
 	~MainTask() {}
 
-    void calculate(QLineSeries*&, QTableWidget*&);
+    void calculate(QLineSeries*&, QLineSeries*&, QTableWidget*&);
+    void calculate1(QLineSeries*&, QTableWidget*&);
     void calculate2(QLineSeries*&, QTableWidget*&);
 };

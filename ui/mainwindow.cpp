@@ -64,12 +64,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->textEdit_3->append("Задача должна быть решена с погрешностью не более ε = 0.5⋅10^{-6};");
     ui->textEdit_3->append("Задача решена с погрешностью ε1 = " + QString().number(0) + ";");
     ui->textEdit_3->append("Максимальное отклонение аналитического и численного решений наблюдается в точке x = " + QString().number(0) + ";");
+    ui->textEdit_3->append("Численная и аналитическая траектории вычислена с шагом: " + QString().number(0) + ";");
 
     ui->textEdit_4->setText("Справка");
     ui->textEdit_4->append("Для решения задачи использована равномерная сетка с числом разбиений n = " + QString().number(0) + ";");
     ui->textEdit_4->append("Задача должна быть решена с погрешностью не более ε = 0.5⋅10^{-6};");
     ui->textEdit_4->append("Задача решена с погрешностью ε2 = " + QString().number(0) + ";");
     ui->textEdit_4->append("Максимальная разность численных решений в общих узлах сетки наблюдается в точке x = " + QString().number(0) + ";");
+    ui->textEdit_4->append("Численная траектория с шагом: " + QString().number(0) + ";");
+    ui->textEdit_4->append("Численная траектория с большим числом разбиений вычислены с шагом: " + QString().number(0) + ";");
 
     ui->checkBox->setChecked(true);
     ui->checkBox_2->setChecked(true);
@@ -86,6 +89,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_firstStart_clicked()
 {
+    if (ui->lineEdit->text().toInt() <= 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Число разбиений должно быть больше 0");
+        msgBox.exec();
+        return;
+    }
+
     ui->graphicsView->zoomIt(true);
 
     testAnSeries = new QLineSeries();
@@ -146,11 +157,20 @@ void MainWindow::on_firstStart_clicked()
     ui->textEdit_3->append("Задача должна быть решена с погрешностью не более ε = 0.5⋅10^{-6};");
     ui->textEdit_3->append("Задача решена с погрешностью ε1 = " + QString().number(e1) + ";");
     ui->textEdit_3->append("Максимальное отклонение аналитического и численного решений наблюдается в точке x = " + QString().number(x1) + ";");
+    ui->textEdit_3->append("Численная и аналитическая траектории вычислены с шагом: " + QString().number(ui->tableWidget->item(1, 1)->text().toDouble() - ui->tableWidget->item(0, 1)->text().toDouble()) + ";");
 }
 
 
 void MainWindow::on_secondStart_clicked()
 {
+    if (ui->lineEdit_2->text().toInt() <= 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Число разбиений должно быть больше 0");
+        msgBox.exec();
+        return;
+    }
+
     ui->graphicsView_2->zoomIt(true);
 
     mainSeries = new QLineSeries();
@@ -161,9 +181,7 @@ void MainWindow::on_secondStart_clicked()
     int n = ui->lineEdit_2->text().toInt();
 
     MainTask task(n + 1);
-    task.calculate(mainSeries, ui->tableWidget_2);
-    MainTask task2(2 * n + 1);
-    task2.calculate2(main2Series, ui->tableWidget_2);
+    task.calculate(mainSeries, main2Series, ui->tableWidget_2);
 
     if (ui->checkBox_3->isChecked()) main2Series->setVisible(true);
     else main2Series->setVisible(false);
@@ -198,7 +216,7 @@ void MainWindow::on_secondStart_clicked()
 
     for (int i = 0; i <= n; i++)
     {
-        ui->tableWidget_2->setItem(i, 4, new QTableWidgetItem(QString::number(abs(ui->tableWidget_2->item(i, 3)->text().toDouble() - ui->tableWidget_2->item(i, 2)->text().toDouble()))));
+        //ui->tableWidget_2->setItem(i, 4, new QTableWidgetItem(QString::number(abs(ui->tableWidget_2->item(i, 3)->text().toDouble() - ui->tableWidget_2->item(i, 2)->text().toDouble()))));
         if (e2 < ui->tableWidget_2->item(i, 4)->text().toDouble())
         {
             e2 = abs(ui->tableWidget_2->item(i, 4)->text().toDouble());
@@ -211,6 +229,8 @@ void MainWindow::on_secondStart_clicked()
     ui->textEdit_4->append("Задача должна быть решена с погрешностью не более ε = 0.5⋅10^{-6};");
     ui->textEdit_4->append("Задача решена с погрешностью ε2 = " + QString().number(e2) + ";");
     ui->textEdit_4->append("Максимальная разность численных решений в общих узлах сетки наблюдается в точке x = " + QString().number(x2) + ";");
+    ui->textEdit_4->append("Численная траектория вычислена с шагом: " + QString().number(ui->tableWidget_2->item(1, 1)->text().toDouble() - ui->tableWidget_2->item(0, 1)->text().toDouble()) + ";");
+    ui->textEdit_4->append("Численная траектория с большим числом разбиений вычислена с шагом: " + QString().number((ui->tableWidget_2->item(1, 1)->text().toDouble() - ui->tableWidget_2->item(0, 1)->text().toDouble()) / 2.) + ";");
 }
 
 

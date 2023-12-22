@@ -49,7 +49,7 @@ double TestTask::phi(double x, double h)
     }
 }
 
-TestTask::TestTask(int N) : Task(N)
+TestTask::TestTask(int N) : nodes(N)
 {}
 
 void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
@@ -57,12 +57,20 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
     double x = 0.;
     double h = 1. / (nodes - 1);
 
+    std::vector<double> A(nodes);
+    std::vector<double> B(nodes);
+    std::vector<double> C(nodes);
+    std::vector<double> Phi(nodes);
+    std::vector<double> V(nodes);
+
     C[0] = 1.;
+    A[0] = 0.;
     B[0] = 0.;
     Phi[0] = mu1;
     Phi[nodes - 1] = mu2;
     C[nodes - 1] = 1.;
     A[nodes - 1] = 0.;
+    B[nodes - 1] = 0.;
 
     table->setRowCount(nodes);
 
@@ -79,7 +87,10 @@ void TestTask::calculate(QLineSeries*& series, QTableWidget*& table)
         Phi[i] = -phi(x, h);
     }
 
-    progonka();
+    Task task1(nodes);
+    task1.setProgonka(A, B, C, Phi);
+    task1.progonka();
+    V = task1.getV();
 
     *series << QPointF(0., 1.);
     table->setItem(0, 0, new QTableWidgetItem(QString::number(0.)));
@@ -122,11 +133,12 @@ void TestTask::calculateTrue(QLineSeries*& series, QTableWidget*& table)
         x += h;
         if (x < xi)
             //u = C1 * exp(a * x) + C2 * exp(-a * x) + 10. / 3.;
-            u = -0.960308 * exp((sqrt(30.) * x) / (sqrt(209.))) + -1.37303 / (exp((sqrt(30.) * x) / (sqrt(209.)))) + 10. / 3.;
+            //u = -0.960308 * exp((sqrt(30.) * x) / (sqrt(209.))) + -1.37303 / (exp((sqrt(30.) * x) / (sqrt(209.)))) + 10. / 3.;
+            u = -0.960308 * exp(sqrt(30. / 209.) * x) + -1.37303 * exp(-sqrt(30. / 209.) * x) + 10. / 3.;
         else
             //u =  C3 * exp(x) + C4 * exp(-x) + p;
             //u = (-6.2589) * exp(x) + (-2.45985) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
-            u = (-2.45985) * exp(x) + (-6.2589) / (exp(x)) + (100. * sin((3. * M_PI) / 10.)) / 9.;
+            u = (-2.45985) * exp(x) + (-6.2589) * (exp(-x)) + sin(0.3 * M_PI) / 0.09;
 
         *series << QPointF(x, u);
         table->setItem(i, 0, new QTableWidgetItem(QString::number(i)));

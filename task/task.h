@@ -2,16 +2,10 @@
 
 #include <cmath>
 #include <vector>
-#include <QLineSeries>
-#include <QTableWidget>
 
 class Task
 {
 protected:
-    double xi = 0.3;                                       // Кси
-    double mu1 = 1.;                                       // Левая граница
-    double mu2 = 0.;                                       // Правая граница
-
     std::vector<double> A;                                 // Левый элемент от диагонали
     std::vector<double> C;                                 // Диагональ
     std::vector<double> B;                                 // Правый элемент от диагонали
@@ -32,8 +26,11 @@ private:
     void progonkaDirectParallel();     // Прямой ход встречной прогонки (Если есть желание - можете реализовать)
     void progonkaReverseParallel();    // Обратный ход встречной прогонки (Если есть желание - можете реализовать)
 
-protected:
+public:
 	void progonka();                   // Метод прогонки
     void resize(int n);                // Изменение полей
+    void setProgonka(const std::vector<double>& _A, const std::vector<double>& _B,
+                     const std::vector<double>& _C, const std::vector<double>& _Phi);
 
+    std::vector<double> getV();
 };
