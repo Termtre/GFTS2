@@ -14,7 +14,6 @@ Task::Task(int n) : nodes(n)
 
 void Task::progonka()
 {
-    //normalization();
     progonkaDirect();
     progonkaReverse();
 }

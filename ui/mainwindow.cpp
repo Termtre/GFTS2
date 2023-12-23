@@ -108,8 +108,7 @@ void MainWindow::on_firstStart_clicked()
 
     TestTask task(n + 1);
 
-    task.calculateTrue(testAnSeries, ui->tableWidget);
-    task.calculate(testSeries, ui->tableWidget);
+    task.calculate(testSeries, testAnSeries, ui->tableWidget);
 
     if (ui->checkBox->isChecked()) testAnSeries->setVisible(true);
     else testAnSeries->setVisible(false);
@@ -144,7 +143,6 @@ void MainWindow::on_firstStart_clicked()
 
     for (int i = 0; i <= n; i++)
     {
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(QString::number(abs(ui->tableWidget->item(i, 3)->text().toDouble() - ui->tableWidget->item(i, 2)->text().toDouble()))));
         if (e1 < ui->tableWidget->item(i, 4)->text().toDouble())
         {
             e1 = ui->tableWidget->item(i, 4)->text().toDouble();
@@ -216,7 +214,6 @@ void MainWindow::on_secondStart_clicked()
 
     for (int i = 0; i <= n; i++)
     {
-        //ui->tableWidget_2->setItem(i, 4, new QTableWidgetItem(QString::number(abs(ui->tableWidget_2->item(i, 3)->text().toDouble() - ui->tableWidget_2->item(i, 2)->text().toDouble()))));
         if (e2 < ui->tableWidget_2->item(i, 4)->text().toDouble())
         {
             e2 = abs(ui->tableWidget_2->item(i, 4)->text().toDouble());
