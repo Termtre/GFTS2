@@ -52,7 +52,7 @@ double TestTask::phi(double x, double h)
 TestTask::TestTask(int N) : nodes(N)
 {}
 
-void TestTask::calculate(QLineSeries*& series, QLineSeries*& seriesTrue, QTableWidget*& table)
+void TestTask::calculate(QLineSeries*& series, QLineSeries*& seriesTrue, QLineSeries*& raz, QTableWidget*& table)
 {
     double x = 0.;
     double h = 1. / (nodes - 1);
@@ -90,6 +90,7 @@ void TestTask::calculate(QLineSeries*& series, QLineSeries*& seriesTrue, QTableW
 
     *series << QPointF(0., 1.);
     *seriesTrue << QPointF(0., 1.);
+    *raz << QPointF(0., 0.);
     table->setItem(0, 0, new QTableWidgetItem(QString::number(0.)));
     table->setItem(0, 1, new QTableWidgetItem(QString::number(0.)));
     table->setItem(0, 2, new QTableWidgetItem(QString::number(1.)));
@@ -121,5 +122,6 @@ void TestTask::calculate(QLineSeries*& series, QLineSeries*& seriesTrue, QTableW
 
         table->setItem(i, 2, new QTableWidgetItem(QString::number(u)));
         table->setItem(i, 4, new QTableWidgetItem(QString::number(abs(u - V[i]))));
+        *raz << QPointF(x, fabs(u - V[i]) * 1e10);
     }
 }

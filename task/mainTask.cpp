@@ -81,7 +81,7 @@ double MainTask::phi(double x, double h)
 MainTask::MainTask(int _nodes) : nodes(_nodes)
 {}
 
-void MainTask::calculate(QLineSeries*& series, QLineSeries*& series2, QTableWidget*& table)
+void MainTask::calculate(QLineSeries*& series, QLineSeries*& series2, QLineSeries*& raz, QTableWidget*& table)
 {
     std::vector<double> A(nodes);
     std::vector<double> B(nodes);
@@ -185,5 +185,6 @@ void MainTask::calculate(QLineSeries*& series, QLineSeries*& series2, QTableWidg
     for (int i = 0; i < nodes; i++)
     {
         table->setItem(i, 4, new QTableWidgetItem(QString::number(abs(V2[2 * i] - V[i]))));
+        *raz << QPointF(static_cast<double>(i) * h, fabs(V2[2 * i] - V[i]) * 1e10);
     }
 }

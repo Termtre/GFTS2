@@ -30,7 +30,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -49,34 +49,7 @@
            <string/>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="1" column="1">
-            <widget class="QPushButton" name="firstDel">
-             <property name="text">
-              <string>Очистить</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QCheckBox" name="firstShowDot">
-             <property name="text">
-              <string>Показ точек</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="4" rowspan="2">
+           <item row="0" column="5" rowspan="2">
             <widget class="QPushButton" name="firstStart">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -96,10 +69,51 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="2">
+            <widget class="QCheckBox" name="firstShowDot">
+             <property name="text">
+              <string>Показ точек</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4">
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="2" colspan="4">
+            <widget class="QRadioButton" name="radioButton_4">
+             <property name="text">
+              <string>График погрешностей</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QCheckBox" name="checkBox_2">
              <property name="text">
               <string>Численная траектория</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QRadioButton" name="radioButton_3">
+             <property name="text">
+              <string>График траекторий</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="firstDel">
+             <property name="text">
+              <string>Очистить</string>
              </property>
             </widget>
            </item>
@@ -125,7 +139,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>424</width>
+             <width>418</width>
              <height>1308</height>
             </rect>
            </property>
@@ -307,23 +321,24 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <string/>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="4" rowspan="2">
-            <widget class="QPushButton" name="secondStart">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="checkBox_3">
              <property name="text">
-              <string>Рассчитать</string>
+              <string>Численная траектория с большим числом разбиений</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="secondDel">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="checkBox_4">
              <property name="text">
-              <string>Очистить</string>
+              <string>Численная траектория</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" colspan="6">
+            <widget class="QRadioButton" name="radioButton_2">
+             <property name="text">
+              <string>График погрешностей</string>
              </property>
             </widget>
            </item>
@@ -334,7 +349,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
+           <item row="1" column="4">
             <spacer name="horizontalSpacer_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -347,17 +362,30 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
             </spacer>
            </item>
-           <item row="1" column="0">
-            <widget class="QCheckBox" name="checkBox_3">
+           <item row="2" column="0">
+            <widget class="QRadioButton" name="radioButton">
              <property name="text">
-              <string>Численная траектория с большим числом разбиений</string>
+              <string>Графики траекторий</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="checkBox_4">
+           <item row="0" column="6" rowspan="2">
+            <widget class="QPushButton" name="secondStart">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
-              <string>Численная траектория</string>
+              <string>Рассчитать</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="secondDel">
+             <property name="text">
+              <string>Очистить</string>
              </property>
             </widget>
            </item>

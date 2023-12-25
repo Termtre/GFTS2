@@ -32,6 +32,14 @@ MainWindow::MainWindow(QWidget *parent)
     chart2->legend()->setVisible(true);
     chart2->setTitle("Основная задача");
 
+    chartRaz1 = new QChart();
+    chartRaz1->legend()->setVisible(false);
+    chartRaz1->setTitle("Разность численной траектории и аналитической");
+
+    chartRaz2 = new QChart();
+    chartRaz2->legend()->setVisible(false);
+    chartRaz2->setTitle("Разность численных траекторий");
+
     axisX1 = new QValueAxis();
     axisX1->setLabelFormat("%f");
     axisX1->setTickCount(10);
@@ -55,6 +63,30 @@ MainWindow::MainWindow(QWidget *parent)
     axisY2->setTickCount(10);
     axisY2->setTitleText("v, v2");
     chart2->addAxis(axisY2, Qt::AlignLeft);
+
+    razX1 = new QValueAxis();
+    razX1->setLabelFormat("%f");
+    razX1->setTickCount(10);
+    razX1->setTitleText("x");
+    chartRaz1->addAxis(razX1, Qt::AlignBottom);
+
+    razX2 = new QValueAxis();
+    razX2->setLabelFormat("%f");
+    razX2->setTickCount(10);
+    razX2->setTitleText("x");
+    chartRaz2->addAxis(razX2, Qt::AlignBottom);
+
+    razY1 = new QValueAxis();
+    razY1->setLabelFormat("%f");
+    razY1->setTickCount(10);
+    razY1->setTitleText("|ui - vi| * 10^10");
+    chartRaz1->addAxis(razY1, Qt::AlignLeft);
+
+    razY2 = new QValueAxis();
+    razY2->setLabelFormat("%f");
+    razY2->setTickCount(10);
+    razY2->setTitleText("|v2i - vi| * 10^10");
+    chartRaz2->addAxis(razY2, Qt::AlignLeft);
 
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView_2->setRenderHint(QPainter::Antialiasing);
@@ -80,6 +112,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->checkBox_4->setChecked(true);
     ui->firstShowDot->setChecked(true);
     ui->secondShowDot->setChecked(true);
+
+    ui->radioButton_3->setChecked(true);
+    ui->radioButton->setChecked(true);
 }
 
 MainWindow::~MainWindow()
@@ -103,12 +138,14 @@ void MainWindow::on_firstStart_clicked()
     testAnSeries->setName("Аналитическая траектория");
     testSeries = new QLineSeries();
     testSeries->setName("Численная траектория");
+    raz1 = new QLineSeries();
+    raz1->setVisible(true);
 
     int n = ui->lineEdit->text().toInt();
 
     TestTask task(n + 1);
 
-    task.calculate(testSeries, testAnSeries, ui->tableWidget);
+    task.calculate(testSeries, testAnSeries, raz1, ui->tableWidget);
 
     if (ui->checkBox->isChecked()) testAnSeries->setVisible(true);
     else testAnSeries->setVisible(false);
@@ -120,23 +157,35 @@ void MainWindow::on_firstStart_clicked()
     {
         testAnSeries->setPointsVisible(true);
         testSeries->setPointsVisible(true);
+        raz1->setPointsVisible(true);
     }
     else
     {
         testAnSeries->setPointsVisible(false);
         testSeries->setPointsVisible(false);
+        raz1->setPointsVisible(false);
     }
 
     chart1->addSeries(testAnSeries);
     chart1->addSeries(testSeries);
+    chartRaz1->addSeries(raz1);
 
     testAnSeries->attachAxis(axisX1);
     testAnSeries->attachAxis(axisY1);
+    raz1->attachAxis(razX1);
 
     testSeries->attachAxis(axisX1);
     testSeries->attachAxis(axisY1);
+    raz1->attachAxis(razY1);
 
-    ui->graphicsView->setChart(chart1);
+    if (ui->radioButton_3->isChecked())
+    {
+        ui->graphicsView->setChart(chart1);
+    }
+    else
+    {
+        ui->graphicsView->setChart(chartRaz1);
+    }
 
     double e1 = 0.;
     double x1 = 0.;
@@ -175,11 +224,13 @@ void MainWindow::on_secondStart_clicked()
     mainSeries->setName("Численная траектория");
     main2Series = new QLineSeries();
     main2Series->setName("Численная траектория с удвоенным числом разбиений");
+    raz2 = new QLineSeries();
+    raz2->setVisible(true);
 
     int n = ui->lineEdit_2->text().toInt();
 
     MainTask task(n + 1);
-    task.calculate(mainSeries, main2Series, ui->tableWidget_2);
+    task.calculate(mainSeries, main2Series, raz2, ui->tableWidget_2);
 
     if (ui->checkBox_3->isChecked()) main2Series->setVisible(true);
     else main2Series->setVisible(false);
@@ -191,23 +242,35 @@ void MainWindow::on_secondStart_clicked()
     {
         mainSeries->setPointsVisible(true);
         main2Series->setPointsVisible(true);
+        raz2->setPointsVisible(true);
     }
     else
     {
         mainSeries->setPointsVisible(false);
-        main2Series->setPointsVisible(true);
+        main2Series->setPointsVisible(false);
+        raz2->setPointsVisible(false);
     }
 
     chart2->addSeries(mainSeries);
     chart2->addSeries(main2Series);
+    chartRaz2->addSeries(raz2);
 
     mainSeries->attachAxis(axisX2);
     mainSeries->attachAxis(axisY2);
+    raz2->attachAxis(razX2);
 
     main2Series->attachAxis(axisX2);
     main2Series->attachAxis(axisY2);
+    raz2->attachAxis(razY2);
 
-    ui->graphicsView_2->setChart(chart2);
+    if (ui->radioButton->isChecked())
+    {
+        ui->graphicsView_2->setChart(chart2);
+    }
+    else
+    {
+        ui->graphicsView_2->setChart(chartRaz2);
+    }
 
     double e2 = 0.;
     double x2 = 0.;
@@ -239,6 +302,8 @@ void MainWindow::on_firstDel_clicked()
         chart1->removeAllSeries();
         testAnSeries = nullptr;
         testSeries = nullptr;
+        chartRaz1->removeAllSeries();
+        raz1 = nullptr;
     }
 }
 
@@ -251,6 +316,8 @@ void MainWindow::on_secondDel_clicked()
         chart2->removeAllSeries();
         mainSeries = nullptr;
         main2Series = nullptr;
+        chartRaz2->removeAllSeries();
+        raz2 = nullptr;
     }
 }
 
@@ -263,11 +330,13 @@ void MainWindow::on_firstShowDot_clicked(bool checked)
         {
             testAnSeries->setPointsVisible(true);
             testSeries->setPointsVisible(true);
+            raz1->setPointsVisible(true);
         }
         else
         {
             testAnSeries->setPointsVisible(false);
             testSeries->setPointsVisible(false);
+            raz1->setPointsVisible(false);
         }
     }
 }
@@ -281,11 +350,13 @@ void MainWindow::on_secondShowDot_clicked(bool checked)
         {
             mainSeries->setPointsVisible(true);
             main2Series->setPointsVisible(true);
+            raz2->setPointsVisible(true);
         }
         else
         {
             mainSeries->setPointsVisible(false);
             main2Series->setPointsVisible(false);
+            raz2->setPointsVisible(false);
         }
     }
 }
@@ -351,6 +422,42 @@ void MainWindow::on_checkBox_3_clicked(bool checked)
         {
             main2Series->setVisible(false);
         }
+    }
+}
+
+
+void MainWindow::on_radioButton_3_clicked(bool checked)
+{
+    if (checked)
+    {
+        ui->graphicsView->setChart(chart1);
+    }
+}
+
+
+void MainWindow::on_radioButton_4_clicked(bool checked)
+{
+    if (checked)
+    {
+        ui->graphicsView->setChart(chartRaz1);
+    }
+}
+
+
+void MainWindow::on_radioButton_clicked(bool checked)
+{
+    if (checked)
+    {
+        ui->graphicsView_2->setChart(chart2);
+    }
+}
+
+
+void MainWindow::on_radioButton_2_clicked(bool checked)
+{
+    if (checked)
+    {
+        ui->graphicsView_2->setChart(chartRaz2);
     }
 }
 

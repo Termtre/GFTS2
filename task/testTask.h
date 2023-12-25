@@ -28,8 +28,6 @@ public:
     TestTask(int);
 	~TestTask() {}
 
-    void calculate(QLineSeries*&, QLineSeries*&, QTableWidget*&);
-    void calculate1(QLineSeries*&, QTableWidget*&);                     // Вычислить траекторию методом баланса
-    void calculateTrue(QLineSeries*&, QTableWidget*&);                 // Вычислить траекторию аналитически
+    void calculate(QLineSeries*&, QLineSeries*&, QLineSeries*&, QTableWidget*&);
 
 };

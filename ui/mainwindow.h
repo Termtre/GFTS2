@@ -42,9 +42,20 @@ private slots:
 
     void on_checkBox_3_clicked(bool checked);
 
+    void on_radioButton_3_clicked(bool checked);
+
+    void on_radioButton_4_clicked(bool checked);
+
+    void on_radioButton_clicked(bool checked);
+
+    void on_radioButton_2_clicked(bool checked);
+
 private:
     QChart* chart1;
     QChart* chart2;
+
+    QChart* chartRaz1;
+    QChart* chartRaz2;
 
     QLineSeries* testAnSeries = nullptr;
     QLineSeries* testSeries = nullptr;
@@ -55,6 +66,13 @@ private:
     QValueAxis* axisY1;
     QValueAxis* axisX2;
     QValueAxis* axisY2;
+
+    QValueAxis* razX1;
+    QValueAxis* razY1;
+    QValueAxis* razX2;
+    QValueAxis* razY2;
+    QLineSeries* raz1 = nullptr;
+    QLineSeries* raz2 = nullptr;
 
 private:
     Ui::MainWindow *ui;

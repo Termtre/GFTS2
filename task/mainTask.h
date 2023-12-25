@@ -29,7 +29,5 @@ public:
 	MainTask(int);
 	~MainTask() {}
 
-    void calculate(QLineSeries*&, QLineSeries*&, QTableWidget*&);
-    void calculate1(QLineSeries*&, QTableWidget*&);
-    void calculate2(QLineSeries*&, QTableWidget*&);
+    void calculate(QLineSeries*&, QLineSeries*&, QLineSeries*&, QTableWidget*&);
 };
